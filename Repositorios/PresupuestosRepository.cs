@@ -14,7 +14,19 @@ public class PresupuestosRepository : IPresupuestosRepository
 
     public void CrearPresupuesto(Presupuesto presupuesto)
     {
-        throw new NotImplementedException();
+        var query = $"INSERT INTO Presupuesto (idPresupuesto, NombreDestinatario) VALUES (@idPresupuesto, @NombreDestinatario)";
+        using (SqliteConnection connection = new SqliteConnection(cadenaConexion))
+        {
+            connection.Open();
+            var command = new SqliteCommand(query, connection);
+
+            command.Parameters.Add(new SqliteParameter("@idPresupuesto", presupuesto.IdPresupuesto));
+            command.Parameters.Add(new SqliteParameter("@NombreDestinatario", presupuesto.NombreDestinatario));
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+        }
     }
 
     public PresupuestoDetalle DetallePresupuesto(int id)
@@ -29,26 +41,38 @@ public class PresupuestosRepository : IPresupuestosRepository
 
     public List<Presupuesto> ListarPresupuestos()
     {
-        var queryString = @"SELECT * FROM Presupuestos;";
-        List<Presupuesto> presupuestos = new();
-            using (SqliteConnection connection = new SqliteConnection(cadenaConexion))
-            {
-                SqliteCommand command = new SqliteCommand(queryString, connection);
-                connection.Open();
+        // var queryString = @"SELECT * FROM Presupuestos  LEFT JOIN PresupuestosDetalle USING(idPresupuesto) LEFT JOIN Productos USING(idProducto) ORDER BY idPresupuesto;";
+        // List<Presupuesto> presupuestos = new();
+        //     using (SqliteConnection connection = new SqliteConnection(cadenaConexion))
+        //     {
+        //         SqliteCommand command = new SqliteCommand(queryString, connection);
+        //         connection.Open();
             
-                using(SqliteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var presupuesto = new Presupuesto();
-                        presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
-                        presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
-                        presupuesto. = Convert.ToInt32(reader["Precio"]);
-                        presupuestos.Add(presupuesto);
-                    }
-                }
-                connection.Close();
-            }
-            return productos;
+        //         using(SqliteDataReader reader = command.ExecuteReader())
+        //         {
+        //             while (reader.Read())
+        //             {
+        //                 var presupuesto = new Presupuesto();
+        //                 presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
+        //                 presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
+        //                 presupuesto.idProducto = reader["idProducto"].ToString();
+        //                 presupuesto.Detalle.Cantidad = Convert.ToInt32(reader["Cantidad"]);
+        //                 presupuesto.Descripcion = reader["Descripcion"].ToString();
+        //                 presupuestoDetalle.Precio = Convert.ToInt32(reader["Precio"]);
+                        
+        //                 var presupuestoDetalle = new PresupuestoDetalle();
+
+        //                 // buscar un producto con id idProducto
+        //                 presupuestoDetalle.Producto = ;
+
+        //                 presupuesto.Detalle.Add(presupuestoDetalle);
+
+        //                 presupuestos.Add(presupuesto);
+        //             }
+        //         }
+        //         connection.Close();
+        //     }
+        //     return presupuestos;
     }
+
 }

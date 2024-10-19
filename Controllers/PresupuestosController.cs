@@ -9,17 +9,17 @@ namespace tl2_tp5_2024_s0a0m.Controllers;
 public class PresupuestosController : ControllerBase
 {
     private readonly ILogger<PresupuestosController> _logger;
-    private readonly IProductoRepository productoR;
+    private readonly IPresupuestosRepository presupuestoR;
 
     public PresupuestosController(ILogger<PresupuestosController> logger)
     {
         _logger = logger;
-        productoR= new ProductoRepository();
+        presupuestoR= new PresupuestosRepository();
     }
 
     [HttpGet]
     public ActionResult<List<Presupuesto>> ObtenerPresupuestos()
     {
-        return Ok(productoR.ListarProductos());
+        return Ok(presupuestoR.ListarPresupuestos());
     }
 }
