@@ -13,8 +13,9 @@ public interface IPresupuestosRepository
 
     public void CrearPresupuesto(Presupuesto presupuesto);
     public List<Presupuesto> ListarPresupuestos();
-    public PresupuestoDetalle DetallePresupuesto(int id);
+    public List<PresupuestoDetalle> DetallePresupuesto(int id);
     public void AgregarProductoYCantidad(int id);
     public void EliminarPresupuesto(int id);
-    
+    public Presupuesto ObtenerPresupuesto(int id);
+
 }

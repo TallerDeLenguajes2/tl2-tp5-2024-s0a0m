@@ -5,7 +5,7 @@ using tl2_tp5_2024_s0a0m.Repositorios;
 namespace tl2_tp5_2024_s0a0m.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("Presupuesto")]
 public class PresupuestosController : ControllerBase
 {
     private readonly ILogger<PresupuestosController> _logger;
@@ -14,12 +14,30 @@ public class PresupuestosController : ControllerBase
     public PresupuestosController(ILogger<PresupuestosController> logger)
     {
         _logger = logger;
-        presupuestoR= new PresupuestosRepository();
+        presupuestoR = new PresupuestosRepository();
     }
 
     [HttpGet]
     public ActionResult<List<Presupuesto>> ObtenerPresupuestos()
     {
         return Ok(presupuestoR.ListarPresupuestos());
+    }
+    [HttpPost]
+    public ActionResult CrearPresupuesto([FromBody] Presupuesto presupuesto)
+    {
+        presupuestoR.CrearPresupuesto(presupuesto);
+        return Created();
+    }
+    [HttpGet("{id}")]
+    public ActionResult<Presupuesto> ObtenerPresupuesto(int id)
+    {
+        var presupuesto = presupuestoR.ObtenerPresupuesto(id);
+        return presupuesto.IdPresupuesto == 0 ? BadRequest() : Ok(presupuesto);
+    }
+    [HttpPost("{id}/ProductoDetalle")]
+    public ActionResult AgregarPresupuestoDetalle([FromBody] PresupuestoDetalle presupuestoDetalle)
+    {
+        // presupuestoR.AgregarProductoYCantidad();
+        return Ok();
     }
 }
